@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'androidx.navigation.safeargs'
 
 android {
     compileSdkVersion rootProject.compileSdk
@@ -15,14 +16,18 @@ android {
         versionName "1.0"
         testInstrumentationRunner testing.junitRunner
     }
+    viewBinding {
+        enabled = true
+    }
+
     buildTypes {
         debug {
-            buildConfigField "String", "API_BASE", '""'
+            buildConfigField "String", "API_BASE", '"https://swapi.dev/api/"'
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "API_BASE", '""'
+            buildConfigField "String", "API_BASE", '"https://swapi.dev/api/"'
         }
     }
 
@@ -49,7 +54,12 @@ dependencies {
     api androidDependencies.appCompat
     implementation androidDependencies.androidXCore
     implementation androidDependencies.activityKtx
-    implementation androidDependencies.fragmentKtx
+   // implementation androidDependencies.fragmentKtx
+    implementation androidDependencies.paging
+
+    //Navigation compoenent
+    implementation navigationComponent.fragmentKtx
+    implementation navigationComponent.navigationUi
 
     //DI
     api daggerDep.core
@@ -93,4 +103,12 @@ dependencies {
     api rx.android
     api rx.kotlin
 
+    testImplementation project(path: ':app')
+    testImplementation testing.coroutines
+    // alternatively - without Android dependencies for tests
+    testImplementation testing.pagingtest
+    testImplementation testing.junit
+    testImplementation testing.kotlintest
+    testImplementation testing.roboelectric
+    testImplementation testing.mockitoKotlin
 }

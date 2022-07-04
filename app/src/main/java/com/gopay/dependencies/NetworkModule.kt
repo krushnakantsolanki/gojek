@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.gopay.BuildConfig
+import com.gopay.network.PeopleApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -66,6 +67,12 @@ class NetworkModule {
     @Singleton
     fun providesRxJavaCallAdapterFactory(): RxJava2CallAdapterFactory =
         RxJava2CallAdapterFactory.create()
+
+
+    @Provides
+    @Singleton
+    fun providesPeopleService(retrofit: Retrofit): PeopleApi =
+        retrofit.create(PeopleApi::class.java)
 
     @Provides
     @Singleton
